@@ -65,6 +65,16 @@ nav ul li {
   padding: 0.2em 0;
 }
 
+footer {
+  text-align: center;
+  margin: 10px auto 0px auto;
+  width: 710px;
+}
+
+footer nav {
+  float: none;
+}
+
 nav ul li a {
   padding: 0 5px;
   font-weight: bold;
