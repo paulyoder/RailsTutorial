@@ -1,3 +1,4 @@
 %h1 Sample App
 %p This is the home page for the #{link_to 'Ruby on Rails Tutorial', 'http://railstutorial.org'} sample application.
 = link_to 'Sign up now!', signup_path, :class => 'signup_button round'
+%p= link_to 'Show first user!', user_path(:id=>1)
