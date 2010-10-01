@@ -3,7 +3,12 @@ require 'spec_helper'
 describe User do
   
   before(:each) do
-    @attr = { :name => "Paul Yoder", :email => "paulyoder@gmail.com" }
+    @attr = { 
+      :name => "Paul Yoder",
+      :email => "paulyoder@gmail.com",
+      :password => 'password',
+      :password_confirmation => 'password' 
+    }
   end
 
   it 'should create a new instance given valid attributes' do
@@ -57,5 +62,56 @@ describe User do
     upcase_email = @attr[:email].upcase
     duplicate_email_user = new_user_email upcase_email
     duplicate_email_user.should_not be_valid
+  end
+
+  describe 'password validations' do
+    it 'should require a password' do
+      User.new(@attr.merge(:password => ''))
+        .should_not be_valid
+    end
+
+    it 'should require a matching password confirmation' do
+      User.new(@attr.merge(:password_confirmation => 'other password'))
+        .should_not be_valid
+    end
+
+    it 'should reject short passwords' do
+      User.new(@attr.merge(:password => '12345', :password_confirmation => '12345'))
+        .should_not be_valid
+    end
+
+    it 'should reject long passwords' do
+      long_password = 'a' * 41
+      User.new(@attr.merge(:password => long_password, :password_confirmation => long_password))
+        .should_not be_valid
+    end
+  end
+
+  describe 'password encryption' do
+    before :each do
+      @user = User.create! @attr
+    end
+
+    it 'should have an encrypted password attribute' do
+      @user.should respond_to :encrypted_password
+    end
+
+    it 'should not be blank' do
+      @user.encrypted_password.should_not be_blank
+    end
+
+    it 'should not be the same as password' do
+      (@user.encrypted_password == @user.password).should be_false
+    end
+
+    describe 'same_password? method' do
+      it 'should be true for same passwords' do
+        @user.same_password?('password').should be_true
+      end
+
+      it 'should be false for different passwords' do
+        @user.same_password?('1234567').should be_false
+      end
+    end
   end
 end
