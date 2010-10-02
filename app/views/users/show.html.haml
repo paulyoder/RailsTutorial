@@ -1,2 +1,12 @@
-%h2= @user.name
-%p= @user.email
+%table.profile
+  %tr
+    %td.main  
+      %h1
+        = gravatar_for @user, :size => 50
+        = @user.name
+    %td.sidebar.round
+      %strong Name 
+      = @user.name
+      %br
+      %strong URL 
+      = link_to user_path(@user), @user

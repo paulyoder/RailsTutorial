@@ -32,6 +32,11 @@ class User < ActiveRecord::Base
     encrypted_password == encrypt(submitted_password)
   end
 
+  def self.authenticate(email, submitted_password)
+    user = find_by_email(email)
+    user && user.same_password?(submitted_password) ? user : nil
+  end
+
   private
 
   def encrypt_password
@@ -40,14 +45,13 @@ class User < ActiveRecord::Base
   end
 
   def encrypt(password)
-    secure_hash '#{salt}--#{password}'
+    secure_hash "#{salt}--#{password}"
   end
 
   def make_salt
     secure_hash "#{Time.now.utc}--#{password}"
   end
   
-
   def secure_hash(value)
     Digest::SHA2.hexdigest value
   end

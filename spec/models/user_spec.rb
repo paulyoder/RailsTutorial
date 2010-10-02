@@ -113,5 +113,19 @@ describe User do
         @user.same_password?('1234567').should be_false
       end
     end
+
+    describe 'authenticate method' do
+      it 'should return nil on email/password mismatch' do
+        User.authenticate(@attr[:email], 'wrong_password').should be_nil
+      end
+
+      it 'should return nil for an email address with no user' do
+        User.authenticate('someemail@email.com', @attr[:password]).should be_nil
+      end
+
+      it 'should return the user on email/password match' do
+        User.authenticate(@attr[:email], @attr[:password]).should == @user
+      end
+    end
   end
 end
