@@ -56,7 +56,7 @@ describe UsersController do
   end
 
   describe "POST 'create'" do
-    describe "failuer" do
+    describe "failure" do
       before (:each) do
         @attr = {:name => "", :email => "", :password => "", :password_confirmation => ""}
       end
@@ -98,6 +98,12 @@ describe UsersController do
         post :create, :user => @attr
         flash[:success].should =~ /welcome to the sample app/i
       end
+
+      it "should sign the user in" do
+        post :create, :session => @attr
+        controller.should be_signed_in
+      end
+
     end
   end
 end

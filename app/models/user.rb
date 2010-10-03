@@ -37,22 +37,27 @@ class User < ActiveRecord::Base
     user && user.same_password?(submitted_password) ? user : nil
   end
 
+  def self.authenticate_with_salt(id, cookie_salt)
+    user = find_by_id(id)
+    user && (user.salt == cookie_salt) ? user : nil
+  end
+
   private
 
-  def encrypt_password
-    self.salt = make_salt if new_record?
-    self.encrypted_password = encrypt self.password
-  end
+    def encrypt_password
+      self.salt = make_salt if new_record?
+      self.encrypted_password = encrypt self.password
+    end
 
-  def encrypt(password)
-    secure_hash "#{salt}--#{password}"
-  end
+    def encrypt(password)
+      secure_hash "#{salt}--#{password}"
+    end
 
-  def make_salt
-    secure_hash "#{Time.now.utc}--#{password}"
-  end
-  
-  def secure_hash(value)
-    Digest::SHA2.hexdigest value
-  end
+    def make_salt
+      secure_hash "#{Time.now.utc}--#{password}"
+    end
+    
+    def secure_hash(value)
+      Digest::SHA2.hexdigest value
+    end
 end
