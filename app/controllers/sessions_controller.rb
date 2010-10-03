@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     if (user)
       sign_in user
       flash[:success] = "You are now signed in!"
-      redirect_to user
+      redirect_back_or user
     else
       @title = "Sign in"
       flash.now[:error] = "Invalid email/password combination"

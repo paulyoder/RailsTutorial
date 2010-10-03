@@ -24,4 +24,8 @@ RSpec.configure do |config|
   def test_sign_in(user)
     controller.sign_in(user)
   end
+
+  def have_title(title)
+    have_selector("title", :content => title)
+  end
 end
