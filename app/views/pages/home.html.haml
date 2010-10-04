@@ -1,4 +1,14 @@
-%h1 Sample App
-%p This is the home page for the #{link_to 'Ruby on Rails Tutorial', 'http://railstutorial.org'} sample application.
-= link_to 'Sign up now!', signup_path, :class => 'signup_button round'
-%p= link_to 'Show first user!', user_path(:id=>1)
+-if signed_in?
+  %table.front
+    %tr
+      %td.main
+        %h1.micropost What's up?
+        = render "shared/micropost_form"
+        = render "shared/feed"
+      %td.sidebar.round
+        = render "shared/user_info"
+- else
+  %h1 Sample App
+  %p This is the home page for the #{link_to 'Ruby on Rails Tutorial', 'http://railstutorial.org'} sample application.
+  = link_to 'Sign up now!', signup_path, :class => 'signup_button round'
+  %p= link_to 'Show first user!', user_path(:id=>1)

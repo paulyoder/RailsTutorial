@@ -3,5 +3,5 @@
     %h2 #{pluralize(object.errors.count, "error")} prohibited this #{object.class.to_s.humanize.downcase} from being saved:
     %p There were problems with the following fields:
     %ul
-      - @user.errors.full_messages.each do |msg|
+      - object.errors.full_messages.each do |msg|
         %li= msg
