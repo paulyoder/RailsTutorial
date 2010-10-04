@@ -1,7 +1,7 @@
 %strong Name 
-= current_user.name
+= user.name
 %br
 %strong URL 
-= link_to user_path(current_user), current_user
+= link_to user_path(user), user
 %br
-= pluralize current_user.microposts.count, "micropost"
+= pluralize user.microposts.count, "micropost"

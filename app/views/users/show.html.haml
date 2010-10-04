@@ -9,4 +9,4 @@
           = render @microposts
         = will_paginate @microposts
     %td.sidebar.round
-      = render "shared/user_info"
+      = render "shared/user_info", :user => @user

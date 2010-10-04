@@ -6,7 +6,7 @@
         = render "shared/micropost_form"
         = render "shared/feed"
       %td.sidebar.round
-        = render "shared/user_info"
+        = render "shared/user_info", :user => current_user
 - else
   %h1 Sample App
   %p This is the home page for the #{link_to 'Ruby on Rails Tutorial', 'http://railstutorial.org'} sample application.
