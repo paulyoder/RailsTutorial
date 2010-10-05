@@ -191,4 +191,28 @@ describe User do
     end
     
   end
+
+  describe "relationships" do
+    before(:each) do
+      @user = User.create!(@attr)
+      @followed = Factory(:user)
+    end
+
+    it "should have a relationships method" do
+      @user.should respond_to(:relationships)
+    end
+
+    it "should have a following method" do
+      @user.should respond_to(:following)
+    end    
+
+    it "should be deleted when user is deleted" do
+      @user.relationships.create!(:followed_id => @followed.id)
+      relationship = @user.relationships.first
+      @user.destroy
+
+      Relationship.find_by_id(relationship.id).should be_nil
+    end
+      
+  end
 end
