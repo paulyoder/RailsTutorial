@@ -4,6 +4,7 @@
       %h1
         = gravatar_for @user, :size => 50
         = @user.name
+      = render "follow_form" if signed_in?
       - if @user.microposts.any?
         %table.microposts
           = render @microposts

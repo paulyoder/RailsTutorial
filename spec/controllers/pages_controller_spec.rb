@@ -15,26 +15,45 @@ describe PagesController do
       response.should have_selector("title", :content => "Home")
     end
 
-    describe "and user not signed in" do
-      it "should have a 'sign in' link" do
+    describe "when not signed in" do
+
+      before :each do
         get :home
+      end
+
+      it "should have a 'sign in' link" do
         response.should have_selector("a", :href => signin_path,
                                            :content => "Sign in")
       end
     end
 
-    describe "and user signed in" do
+    describe "when signed in" do
+
+      before :each do
+        @user = test_sign_in(Factory(:user))
+        other_user = Factory(:user)
+        other_user.follow!(@user)
+      end
+
       it "should have a 'sign out' link" do
-        test_sign_in(Factory(:user))
         get :home
         response.should have_selector("a", :href => signout_path,
                                            :content => "Sign out")
       end
 
       it "should have a link to the user profile" do
-        test_sign_in(Factory(:user))
         get :home
         response.should have_selector("a", :content => "Profile")
+      end
+
+
+      it "should have the right follower/following counts" do
+        get :home
+        response.should have_selector("a", :href => following_user_path(@user),
+                                           :content => "0 following")
+        response.should have_selector("a", :href => followers_user_path(@user),
+                                           :content => "1 follower")
+
       end
     end
   end
